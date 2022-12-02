@@ -12,6 +12,23 @@ public class Bag {
             this.tiles[i] = new Tile((char)('A'+i),scores[i]);
         }
     }
+
+    public int[] getLetter_count() {
+        return letter_count;
+    }
+
+    public void setLetter_count(int[] letter_count) {
+        this.letter_count = letter_count;
+    }
+
+    public Tile[] getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(Tile[] tiles) {
+        this.tiles = tiles;
+    }
+
     public Tile getRand(){
         int count=0;
         //check if the bag is empty
@@ -43,10 +60,12 @@ public class Bag {
         }
         return null;
     }
-    public void put(Tile tile){
-        int[] max_count = new int[]{9,2,2,4,12,2,3,2,9,1,1,4,2,6,8,2,1,6,4,6,4,2,2,1,2,1};
-
+    public void put(Tile tile) {
+        int[] max_count = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1};
+        if(this.letter_count[(int)tile.letter-(int)'A']<(max_count[(int)tile.letter-(int)'A']))
+        {
+            this.letter_count[(int)tile.letter] +=1;
+        }
     }
-
 
 }
