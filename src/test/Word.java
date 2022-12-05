@@ -25,7 +25,13 @@ public class Word {
         return row;
     }
 
-
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        if (!super.equals(object)) return false;
+        Word word = (Word) object;
+        return row == word.row && col == word.col && vertical == word.vertical && java.util.Arrays.equals(tiles, word.tiles);
+    }
     public void setRow(int row) {
         this.row = row;
     }
@@ -44,5 +50,8 @@ public class Word {
 
     public void setVertical(boolean vertical) {
         this.vertical = vertical;
+    }
+    public int getLength(){
+        return this.tiles.length;
     }
 }
