@@ -14,9 +14,9 @@ public class Board {
 
     public Tile[][] getTiles() {
         Tile[][] clone = new Tile[15][15];
-        for (int i = 0; i < 15; i++) {[]
+        for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                clone = this.board[i];
+                clone[i][j] = this.board[i][j];
             }
         }
         return clone;
@@ -34,18 +34,20 @@ public class Board {
             return false;
 
         // if word is out of border
-        if(word.getRow()<0 || word.getCol()<0 || (word.getLength()+word.getCol()-1)>14))
+        if(word.getRow()<0 || word.getCol()<0 || (word.getLength()+word.getCol()-1)>14)
             return false;
 
-        for(int j=word.getCol();j<(word.getCol()+word.getLength());j++){
-             if (this.board[word.getRow()][])
+//        for(int j=word.getCol();j<(word.getCol()+word.getLength());j++){
+//             if (this.board[word.getRow()][])
+//
+//
+//        }
 
-
-        }
-
+        return true;
     }
 
     public boolean boardLegal(Word word) {
         //word isnt leaking from the board
+        return true;
     }
 }
