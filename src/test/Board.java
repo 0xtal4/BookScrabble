@@ -1,5 +1,7 @@
 package test;
 
+import java.util.ArrayList;
+
 public class Board {
     private static Board board_instance;
     private Tile[][] board;
@@ -55,7 +57,27 @@ public class Board {
         return false;
     }
 
+    private boolean isNeighbourV2(Word word, Tile[][] board){
+        try {
+            if (board[word.getRow()][word.getCol()-1]!=null)
+                return true;} finally {System.out.println("error");}
 
+        try{
+            if (board[word.getRow()][word.getLength()+ word.getCol()]!=null)
+                return true;
+        } finally {System.out.println("error");}
+
+        try{
+            if (neighbourUp(word, board))
+                return true;
+        } finally {System.out.println("error");}
+
+        try{
+            if(neighbourDown(word, board))
+                return true;
+        }finally {System.out.println("error");}
+       return false;
+    }
     private boolean isNeighbour(Word word, Tile [][] board ){
         //top left
         if (word.getCol() ==0 && word.getRow()==0 && (word.getCol()+ word.getLength()-1)<14){
@@ -173,7 +195,7 @@ public class Board {
         if (isOverride(word,board))
             return false;
 
-        if (!isNeighbour(word,board))
+        if (!isNeighbourV2(word,board))
             return false;
         return true;
     }
@@ -198,4 +220,77 @@ public class Board {
         else
             return boardLegalHorizontal(word,board);
     }
+    private boolean dictionaryLegal(){return true;}
+    private Word tilesList2Word(ArrayList<Tile> tiles,int row, int col,boolean isVert){
+        Tile[] arr = new Tile[tiles.size()];
+        int iter=0;
+        for (Tile t:tiles){
+            arr[iter] = t;
+            iter++;
+        }
+        Word word = new Word(arr,row,col,isVert);
+        return word;
+    }
+    private ArrayList<Word> extractWordsFromLine (Tile[] line,int row,boolean isVert){
+        ArrayList<Tile> tiles = new ArrayList<Tile>();
+        ArrayList<Word> words = new ArrayList<Word>();
+        int col;
+        for(int i=0;i<15;i++)
+        {
+           if (line[i]!=null){
+               int j=i;
+               col=i;
+               while(line[j]!=null && j<15){
+                    tiles.add(line[j]);
+                    j++;
+               }
+               words.add(tilesList2Word(tiles,row,col,isVert));
+               tiles.clear();
+               i=j;
+           }
+        }
+        return words;
+    }
+    private ArrayList<Word> allHorizontalWords(Tile[][] board,boolean isVert){
+        ArrayList<Word> words = new ArrayList<Word>();
+        for (int i=0;i<15;i++)
+        {
+            words.addAll(extractWordsFromLine(board[i],i,isVert));
+
+        }
+        for(Word w:words){
+            if (w.getLength()==1)
+                words.remove(w);
+        }
+        return words;
+    }
+   public ArrayList<Word> getWords(Word word) {
+       ArrayList<Word> currentWords = new ArrayList<Word>();
+       currentWords.addAll(allHorizontalWords(this.board, false));
+       currentWords.addAll(allHorizontalWords(rotateCounterClock(this.board), true));
+       //cloning the board
+       Tile[][] tempBoard = new Tile[15][15];
+       for (int i = 0; i < 15; i++) {
+           for (int j = 0; j < 15; j++) {
+               tempBoard[i][j] = this.board[i][j];
+           }
+       }
+       //adds new word to a temp board
+       if (word.isVertical()) {
+           for (int i = word.getRow(); i < word.getLength() + word.getRow(); i++) {
+               tempBoard[i][word.getCol()] = word.getTiles()[i - word.getRow()];
+           }
+       } else {
+           for (int j = word.getCol(); j < word.getLength() + word.getCol(); j++) {
+               tempBoard[word.getRow()][j] = word.getTiles()[j - word.getCol()];
+           }
+       }
+       //extract all new words
+       ArrayList<Word> newWords = new ArrayList<Word>();
+       newWords.addAll(allHorizontalWords(tempBoard, false));
+       newWords.addAll(allHorizontalWords(rotateCounterClock(tempBoard), true));
+
+       newWords.removeAll(currentWords);
+       return newWords;
+   }
 }
