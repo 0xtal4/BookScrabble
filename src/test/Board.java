@@ -5,11 +5,37 @@ import java.util.ArrayList;
 public class Board {
     private static Board board_instance;
     private Tile[][] board;
-
+    private char[][] bonuses;
     public static Board getBoard() {
         if (board_instance == null)
             board_instance = new Board();
         return board_instance;
+    }
+    private Board(){
+        board = new Tile[15][15];
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15;j++){
+                board[i][j]=null;
+            }
+        }
+        bonuses = new char[][]{
+                {'r', ' ', ' ', 'a', ' ', ' ', ' ', 'r', ' ', ' ', ' ', 'a', ' ', ' ', 'r'},
+                {' ', 'y', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'y', ' '},
+                {' ', ' ', 'y', ' ', ' ', ' ', 'a', ' ', 'a', ' ', ' ', ' ', 'y', ' ', ' '},
+                {'a', ' ', ' ', 'y', ' ', ' ', ' ', 'a', ' ', ' ', ' ', 'y', ' ', ' ', 'a'},
+                {' ', ' ', ' ', ' ', 'y', ' ', ' ', ' ', ' ', ' ', 'y', ' ', ' ', ' ', ' '},
+                {' ', 'b', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'b', ' '},
+                {' ', ' ', 'a', ' ', ' ', ' ', 'a', ' ', 'a', ' ', ' ', ' ', 'a', ' ', ' '},
+                {'r', ' ', ' ', 'a', ' ', ' ', ' ', 's', ' ', ' ', ' ', 'a', ' ', ' ', 'r'},
+                {' ', ' ', 'a', ' ', ' ', ' ', 'a', ' ', 'a', ' ', ' ', ' ', 'a', ' ', ' '},
+                {' ', 'b', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'b', ' '},
+                {' ', ' ', ' ', ' ', 'y', ' ', ' ', ' ', ' ', ' ', 'y', ' ', ' ', ' ', ' '},
+                {'a', ' ', ' ', 'y', ' ', ' ', ' ', 'a', ' ', ' ', ' ', 'y', ' ', ' ', 'a'},
+                {' ', ' ', 'y', ' ', ' ', ' ', 'a', ' ', 'a', ' ', ' ', ' ', 'y', ' ', ' '},
+                {' ', 'y', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'y', ' '},
+                {'r', ' ', ' ', 'a', ' ', ' ', ' ', 'r', ' ', ' ', ' ', 'r', ' ', ' ', 'r'}
+        };
+
 
     }
 
@@ -23,9 +49,9 @@ public class Board {
         return clone;
     }
     private boolean firstWordStared(Word word,Tile [][] board){
-        // if first word isnt on star
+        // if first word isn't on star
         if (board[7][7] == null) {
-            if ((word.getCol() > 7) || (word.getCol()+word.getLength())<8)
+            if ((word.getRow()!=7)||(word.getCol() > 7) || (word.getCol()+word.getLength())<8)
                 return false;
         }
         return true;
@@ -33,7 +59,9 @@ public class Board {
     private boolean isOverride(Word word,Tile [][] board){
         int iterator=0;
         for(int j=word.getCol();j<(word.getCol()+word.getLength());j++){
-            if (board[word.getRow()][j]!= null
+            if (word.getTiles()[iterator] == null && board[word.getRow()][j]!=null)
+                continue;
+            else if (board[word.getRow()][j]!= null
                     &&
                     !board[word.getRow()][j].equals(word.getTiles()[iterator]))
                 return true;
@@ -76,6 +104,7 @@ public class Board {
             if(neighbourDown(word, board))
                 return true;
         }finally {System.out.println("error");}
+        System.out.println("okkkkk");
        return false;
     }
     private boolean isNeighbour(Word word, Tile [][] board ){
@@ -184,10 +213,27 @@ public class Board {
         else
             return false;
     }
+    private boolean isEmpty(Tile[][] board){
+        for (int i=0;i<14;i++)
+        {
+            for (int j=0;j<14;j++){
+                if (board[i][j]!=null)
+                    return false;
+            }
+        }
+        return true;
+    }
     private boolean boardLegalHorizontal(Word word,Tile[][] board) {
-        if (!firstWordStared(word,board))
-            return false;
+        if (isEmpty(board)) {
+            if (!firstWordStared(word, board))
+                return false;
+            if(word.getRow()<0 || word.getCol()<0 || (word.getLength()+word.getCol()-1)>14)
+                return false;
 
+            if (isOverride(word,board))
+                return false;
+            return true;
+        }
         // if word is out of border
         if(word.getRow()<0 || word.getCol()<0 || (word.getLength()+word.getCol()-1)>14)
             return false;
@@ -195,7 +241,7 @@ public class Board {
         if (isOverride(word,board))
             return false;
 
-        if (!isNeighbourV2(word,board))
+        if (!isNeighbour(word,board))
             return false;
         return true;
     }
@@ -215,12 +261,14 @@ public class Board {
     }
 
     public boolean boardLegal(Word word) {
-        if (word.isVertical())
-            return boardLegalHorizontal(word,rotateCounterClock(board));
+        if (word.isVertical()) {
+            Word temp = new Word(word.getTiles(), word.getCol(), word.getRow(),false);
+            return boardLegalHorizontal(temp, rotateCounterClock(board));
+        }
         else
             return boardLegalHorizontal(word,board);
     }
-    private boolean dictionaryLegal(){return true;}
+    private boolean dictionaryLegal(Word word){return true;}
     private Word tilesList2Word(ArrayList<Tile> tiles,int row, int col,boolean isVert){
         Tile[] arr = new Tile[tiles.size()];
         int iter=0;
@@ -244,7 +292,9 @@ public class Board {
                     tiles.add(line[j]);
                     j++;
                }
-               words.add(tilesList2Word(tiles,row,col,isVert));
+               if (tiles.size()>1) {
+                   words.add(tilesList2Word(tiles, row, col, isVert));
+               }
                tiles.clear();
                i=j;
            }
@@ -252,16 +302,22 @@ public class Board {
         return words;
     }
     private ArrayList<Word> allHorizontalWords(Tile[][] board,boolean isVert){
+        ArrayList<Word> oneLetter = new ArrayList<Word>();
         ArrayList<Word> words = new ArrayList<Word>();
         for (int i=0;i<15;i++)
         {
             words.addAll(extractWordsFromLine(board[i],i,isVert));
 
         }
-        for(Word w:words){
-            if (w.getLength()==1)
-                words.remove(w);
-        }
+//        for(Word w:words){
+//            if (w.getLength()==1)
+//                oneLetter.add(w);
+//        }
+//        words.removeAll(oneLetter);
+//        return words;
+        if (isVert)
+            for(Word w:words)
+                changeRowCol(w);
         return words;
     }
    public ArrayList<Word> getWords(Word word) {
@@ -278,11 +334,13 @@ public class Board {
        //adds new word to a temp board
        if (word.isVertical()) {
            for (int i = word.getRow(); i < word.getLength() + word.getRow(); i++) {
-               tempBoard[i][word.getCol()] = word.getTiles()[i - word.getRow()];
+               if (word.getTiles()[i - word.getRow()]!=null)
+                   tempBoard[i][word.getCol()] = word.getTiles()[i - word.getRow()];
            }
        } else {
            for (int j = word.getCol(); j < word.getLength() + word.getCol(); j++) {
-               tempBoard[word.getRow()][j] = word.getTiles()[j - word.getCol()];
+               if (word.getTiles()[j - word.getCol()]!=null)
+                   tempBoard[word.getRow()][j] = word.getTiles()[j - word.getCol()];
            }
        }
        //extract all new words
@@ -290,7 +348,112 @@ public class Board {
        newWords.addAll(allHorizontalWords(tempBoard, false));
        newWords.addAll(allHorizontalWords(rotateCounterClock(tempBoard), true));
 
+
        newWords.removeAll(currentWords);
        return newWords;
+   }
+   private void changeRowCol(Word w){
+        int temp;
+        temp = w.getCol();
+        w.setCol(w.getRow());
+        w.setRow(temp);
+   }
+   //private ArrayList<Word> removeAll(ArrayList<Word> src,ArrayList<Word> del){
+//
+   //}
+
+   public int getScore(Word word){
+        int score=0;
+        int mul=1;
+        for(Tile t:word.getTiles()){
+            score+=t.score;
+        }
+        if (word.isVertical()){
+            for (int i= word.getRow();i< word.getRow()+ word.getLength();i++){
+                switch (bonuses[i][word.getCol()]){
+                    case 's':
+                        mul=2;
+                        bonuses[i][word.getCol()]=' ';
+                        break;
+                    case 'r':
+                        mul =3;
+                        break;
+                    case 'y':
+                        mul=2;
+                        break;
+                    case 'a':
+                        score+=word.getTiles()[i-word.getRow()].score;
+                        break;
+                    case 'b':
+                        score+=word.getTiles()[i- word.getRow()].score*2;
+                        break;
+                }
+            }
+        }else {
+            for (int j = word.getCol(); j < word.getCol() + word.getLength(); j++) {
+                switch (bonuses[word.getRow()][j]) {
+                    case 's':
+                        mul = 2;
+                        bonuses[word.getRow()][j] = ' ';
+                        break;
+                    case 'r':
+                        mul = 3;
+                        break;
+                    case 'y':
+                        mul = 2;
+                        break;
+                    case 'a':
+                        score += word.getTiles()[j - word.getCol()].score;
+                        break;
+                    case 'b':
+                        score += word.getTiles()[j - word.getCol()].score * 2;
+                        break;
+                }
+            }
+        }
+        return score*mul;
+   }
+   private void printBoard(){
+       System.out.println("-------------------------------------------------");
+        for (int i=0;i<15;i++){
+            for (int j=0;j<15;j++){
+                if (board[i][j]==null)
+                    System.out.print("_ ");
+                else
+                    System.out.print(board[i][j].letter);
+            }
+            System.out.print('\n');
+        }
+       System.out.println("-------------------------------------------------");
+   }
+   public int tryPlaceWord(Word word){
+        ArrayList<Word> newWords = new ArrayList<Word>();
+        int score=0;
+        if (!boardLegal(word))
+            return 0;
+        newWords = getWords(word);
+        for (Word w:newWords) {
+            if (!dictionaryLegal(w))
+                return 0;
+        }
+       if (word.isVertical()) {
+           for (int i = word.getRow(); i < word.getRow() + word.getLength(); i++) {
+               if (word.getTiles()[i - word.getRow()] != null) {
+                   board[i][word.getCol()] = word.getTiles()[i - word.getRow()];
+               }
+           }
+       } else {
+           for (int j=word.getCol();j<word.getLength()+word.getCol();j++){
+               board[word.getRow()][j] = word.getTiles()[j-word.getCol()];
+           }
+       }
+
+        for (Word w:newWords){
+            score+=getScore(w);
+        }
+
+        
+        return score;
+
    }
 }
