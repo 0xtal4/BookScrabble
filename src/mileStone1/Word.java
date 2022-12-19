@@ -1,4 +1,4 @@
-package test;
+package mileStone1;
 
 
 public class Word {
