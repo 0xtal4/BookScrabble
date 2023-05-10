@@ -1,4 +1,4 @@
-package test;
+package src;
 import test.DictionaryManager;
 
 import java.io.IOException;

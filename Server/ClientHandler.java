@@ -1,4 +1,4 @@
-package test;
+package src;
 
 import java.io.InputStream;
 import java.io.OutputStream;

@@ -1,4 +1,4 @@
-package mileStone2;
+package src;
 
 public interface CacheReplacementPolicy{
 	void add(String word);
