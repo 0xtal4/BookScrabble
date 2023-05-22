@@ -1,4 +1,4 @@
-package src;
+package com.bookscrabble.client.model;
 
 
 public class Word {
@@ -50,5 +50,15 @@ public class Word {
     }
     public int getLength(){
         return this.tiles.length;
+    }
+
+    /**
+     * turns the word's data into a string in the following format:
+     *
+     * @return
+     */
+    public String toString(){
+        StringBuilder stringWord= new StringBuilder();
+
     }
 }

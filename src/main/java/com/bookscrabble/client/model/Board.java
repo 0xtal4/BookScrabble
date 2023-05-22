@@ -1,4 +1,4 @@
-package src;
+package com.bookscrabble.client.model;
 
 import java.util.ArrayList;
 

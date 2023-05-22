@@ -1,4 +1,4 @@
-package src;
+package com.bookscrabble.server;
 import java.util.LinkedList;
 import java.util.Queue;
 
