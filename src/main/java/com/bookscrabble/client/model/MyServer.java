@@ -1,8 +1,12 @@
-package src;
+package com.bookscrabble.client.model;
+
+import com.bookscrabble.server.ClientHandler;
+
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.io.IOException;
 import java.net.SocketTimeoutException;
+
 public class MyServer {
     private int port;
     private ClientHandler ch;

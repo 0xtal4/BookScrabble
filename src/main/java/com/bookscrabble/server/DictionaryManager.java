@@ -1,8 +1,7 @@
-package src;
+package com.bookscrabble.server;
 
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class DictionaryManager {
     private static DictionaryManager handler = null;

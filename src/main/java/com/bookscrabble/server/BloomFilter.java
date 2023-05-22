@@ -1,4 +1,4 @@
-package src;
+package com.bookscrabble.server;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
