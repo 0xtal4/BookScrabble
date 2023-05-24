@@ -54,11 +54,20 @@ public class Word {
 
     /**
      * turns the word's data into a string in the following format:
-     *
+     * row(int),col(int),vertical("T"/"F"),tiles....
      * @return
      */
     public String toString(){
         StringBuilder stringWord= new StringBuilder();
+        stringWord.append(row);
+        stringWord.append(",");
+        stringWord.append(col);
+        stringWord.append(",");
+        for (Tile tile : tiles) {
+            stringWord.append()
+
+        }
+        stringWord.append(row);
 
     }
 }
