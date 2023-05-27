@@ -8,7 +8,6 @@ public class BookScrabbleHandler implements ClientHandler{
  private DictionaryManager DM = new DictionaryManager();
  public void handleClient(InputStream inFromclient, OutputStream outToClient){
      String text = new Scanner(inFromclient).next();
-
      String[] textArr = text.split(",");
      String[] args = Arrays.copyOfRange(textArr, 1, textArr.length);
 
