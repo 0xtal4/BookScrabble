@@ -9,7 +9,7 @@ public class MyServer {
     private int port;
     private ClientHandler ch;
     private volatile boolean stop;
-    MyServer(int Port, ClientHandler handler){
+    public MyServer(int Port, ClientHandler handler){
         this.port = Port;
         this.ch = handler;
         this.stop = false;
