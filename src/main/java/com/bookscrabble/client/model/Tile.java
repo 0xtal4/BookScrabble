@@ -9,6 +9,20 @@ public class Tile {
     public final int score;
 
 
+    /**
+     * return a string that represents the tile for a message in the format
+     * letter,score
+     * @return
+     */
+    public String toMessage()
+    {
+        StringBuilder str = new StringBuilder();
+        str.append(letter);
+        str.append(",");
+        str.append(score);
+        return str.toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -22,7 +36,7 @@ public class Tile {
         return Objects.hash(letter, score);
     }
 
-    private Tile(char letter, int score) {
+    public Tile(char letter, int score) {
         this.letter = letter;
         this.score = score;
     }

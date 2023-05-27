@@ -38,6 +38,14 @@ public class Board {
 
 
     }
+    /*public Tile[] getTiles(String word)
+    {
+        char[] letters = word.toCharArray();
+        Tile[] tiles = new Tile[letters.length];
+        for(int i=0;i<letters.length; i++)
+            tiles[i] = Tile.Bag.getBag().getTile(letters[i]);
+        return tiles;
+    }*/
 
     public Tile[][] getTiles() {
         Tile[][] clone = new Tile[15][15];

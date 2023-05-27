@@ -1,8 +1,14 @@
 package com.bookscrabble.client.model;
 
+import java.util.ArrayList;
+
 public class Player {
-    //the name of the player
-    String name;
+    ArrayList<Tile> givenTiles;
     int points;
-    int turn;
+
+    public Player()
+    {
+        givenTiles = new ArrayList<>();
+        points = 0;
+    }
 }
