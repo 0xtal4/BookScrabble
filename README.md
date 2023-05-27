@@ -1,4 +1,4 @@
-gantt.jpg# BookScrabble
+# BookScrabble
 
 Hello and welcome to our wonderfull BookScrabble Project. 
 We are a team of three student developers that are making this project as part of our computer science degree studies in the course ״Advanced software development״.
