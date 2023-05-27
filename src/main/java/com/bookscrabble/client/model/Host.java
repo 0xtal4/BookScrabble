@@ -1,5 +1,7 @@
 package com.bookscrabble.client.model;
 
+import com.bookscrabble.server.MyServer;
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -41,8 +43,13 @@ public class Host {
     public void startGame(String[] dictionaries) throws Exception
     {
         server = new MyServer(3000, new GuestHanlder());
-        facade = new MyServerFacade(1000, "local_host");
+        facade = new MyServerFacade(9999, "localhost");
         this.dictionaries = Arrays.copyOfRange(dictionaries, 0, dictionaries.length-1);
+    }
+
+    public Tile getTile()
+    {
+        return Tile.Bag.getBag().getRand();
     }
 
     /**
@@ -57,7 +64,7 @@ public class Host {
             try {
                 //check if the word is dictionary legal or nat
                 if(facade.Query(dictionaries, word.toString()))
-                    return "Success," + gameBoard.tryPlaceWord(word);
+                    return "success," + gameBoard.tryPlaceWord(word);
                 else return "dictionaryIllegal";
             }catch (IOException e)
             {
@@ -68,9 +75,9 @@ public class Host {
         return "boardIllegal";
     }
 
-    public boolean challange(Word word)
+    public boolean challenge(Word word)
     {
-        return facade.Challenge(dictionaries, word.toString());
+        return facade.Challenge(dictionaries, word.toLetters());
     }
 
     public static Host getHost()

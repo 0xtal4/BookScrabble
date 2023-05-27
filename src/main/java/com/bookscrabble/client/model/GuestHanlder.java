@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -18,6 +19,7 @@ public class GuestHanlder implements ClientHandler {
 
     //the last word that was requested, this way we can avoid naughty hackers (;
     private Word lastWordRequest;
+    private HashMap<Character, Tile> givenTiles;
     /**
      * Handles the requests that are recieved by the players that connected to the given host in guest mode
      * @param inFromclient
@@ -29,36 +31,52 @@ public class GuestHanlder implements ClientHandler {
         PrintWriter out=new PrintWriter(outToClient);
         String[] textArr = text.split(",");
         String request = textArr[0];
-        int col = Integer.parseInt(textArr[1]);
-        int row = Integer.parseInt(textArr[2]);
-        boolean vertical = false;
-        if(textArr[3].equals("T"))
-            vertical = true;
-        String givenWord = textArr[4];
+
 
 
         switch (request){
             //the guest requested to place a word on the board
             case "W":
+                int col = Integer.parseInt(textArr[1]);
+                int row = Integer.parseInt(textArr[2]);
+                boolean vertical = false;
+                if(textArr[3].equals("T"))
+                    vertical = true;
+                String givenWord = textArr[4];
                 //construct the word:
-                Word word = new Word(getTiles(givenWord), row, col, vertical);
+                Tile[] given = getGivenTiles(request);
+                if(given == null)
+                {
+                    out.println("hacker");
+                    break;
+                }
+                Word word = new Word(getGivenTiles(givenWord), row, col, vertical);
                 lastWordRequest = word;
                 out.println(Host.getHost().tryInsertWord(word));
                 break;
 
             case "C":
-                out.println(Host.getHost().challange(lastWordRequest));
+                out.println(Host.getHost().challenge(lastWordRequest));
+                break;
+                //the guest wants to take another tile
+            case "T":
+                Tile newTile = Host.getHost().getTile();
+                givenTiles.put(newTile.letter, newTile);
+                out.println(newTile.toMessage());
         }
         out.flush();
     }
 
-    private Tile[] getTiles(String word)
+    public Tile[] getGivenTiles(String word)
     {
-        char[] letters = word.toCharArray();
-        Tile[] tiles = new Tile[letters.length];
-        for(int i=0;i<letters.length; i++)
-            tiles[i] = Tile.Bag.getBag().getTile(letters[i]);
-        return tiles;
+        ArrayList<Tile> tiles = new ArrayList<>();
+
+        for (char c: word.toCharArray()) {
+            if(givenTiles.containsKey(c))
+                tiles.add(givenTiles.get(c));
+            else return null;
+        }
+        return tiles.toArray(new Tile[0]);
     }
 
 
