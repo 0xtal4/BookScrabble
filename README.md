@@ -9,7 +9,7 @@ Inorder to finish this project in time we have made this charming gantt chart th
 
 ![gantt](https://github.com/0xtal4/BookScrabble/blob/master/gantt.jpg?raw=true)
 
-# work distribution :
+## work distribution :
 
 Contribution  | Gal                               | Tal                               | Dotan                             |
 --------------|-----------------------------------|-----------------------------------|-----------------------------------|
