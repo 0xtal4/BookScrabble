@@ -72,11 +72,11 @@ public class Word {
         }
         return stringWord.toString();
     }
-
     public String toLetters(){
         StringBuilder stringWord= new StringBuilder();
         for (Tile tile : tiles) {
-            stringWord.append(tile.letter);
+            if(tile!=null)
+                stringWord.append(tile.letter);
         }
         return stringWord.toString();
     }
