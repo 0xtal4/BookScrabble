@@ -7,4 +7,4 @@ We are all eager to learn and gain experience in the field, so we have decided t
 
 Inorder to finish this project in time we have made this charming gantt chart that shows the tasks division:
 
-![alt text](https://github.com/0xtal4/BookScrabble/gantt.jpg?raw=true)
+![gantt](https://github.com/0xtal4/BookScrabble/assets/57890440/1128f944-ec91-401d-997e-4e0bb599ba94)
