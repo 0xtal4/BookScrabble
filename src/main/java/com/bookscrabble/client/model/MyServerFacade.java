@@ -10,7 +10,7 @@ import java.util.Scanner;
  * @param server is our socket to the main server
  */
 public class MyServerFacade {
-    Socket server;
+    private Socket server;
     /**
      * this is the builder for the class,it creates the connection to the main server.
      *
@@ -20,7 +20,7 @@ public class MyServerFacade {
      */
     public MyServerFacade(int port, String address) throws IOException {
         if (address == null){
-            address = "localhost"
+            address = "localhost";
         }
         server = new Socket("localhost", port);
     }
