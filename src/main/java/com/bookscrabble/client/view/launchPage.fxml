@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bookscrabble.client.viewmodel.SceneManager" stylesheets="@styles.css">
+    <children>
+        <VBox spacing="10" alignment="center" maxWidth="400" maxHeight="300">
+            <children>
+                <Label text="Welcome to BookScrabble!" />
+                <Button text="Start A New Game" onAction="#startGameAsHost" />
+                <Button text="Joint A Game As Guest" onAction="#connectToHost" />
+            </children>
+        </VBox>
+    </children>
+</StackPane>
