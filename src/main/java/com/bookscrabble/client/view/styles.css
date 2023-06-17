@@ -1,0 +1,15 @@
+.root {
+    -fx-background-color: #FFDEDE;
+}
+
+StackPane {
+    -fx-background-color: #FFDEDE;
+}
+
+VBox
+{
+    -fx-padding: 20;
+    -fx-background-color: #FAF0E4;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 4);
+}

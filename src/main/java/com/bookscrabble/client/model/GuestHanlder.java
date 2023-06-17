@@ -21,7 +21,7 @@ public class GuestHanlder implements ClientHandler {
     private Word lastWordRequest;
     private HashMap<Character, Tile> givenTiles;
     /**
-     * Handles the requests that are recieved by the players that connected to the given host in guest mode
+     * Handles the requests that are received by the players that connected to the given host in guest mode
      * @param inFromclient
      * @param outToClient
      */
