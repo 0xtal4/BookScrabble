@@ -11,7 +11,9 @@ import java.util.Scanner;
 public class MyServerFacade {
 
     //socket to the main server
-    Socket server;
+
+    int Port;
+    String Address;
     /**
      * this is the builder for the class,it creates the connection to the main server.
      *
@@ -20,9 +22,9 @@ public class MyServerFacade {
      */
     public MyServerFacade(int port, String address) throws IOException {
         if (address == null){
-            address = "localhost";
+            Address = "localhost";
         }
-        server = new Socket(address, port);
+        Port = port;
     }
 
     /**
@@ -32,15 +34,25 @@ public class MyServerFacade {
      * @param query the word that we want to search
      */
     public Boolean Challenge(String[] dictionaries, String query){
-        String res;
         try{
+            boolean answer = false;
+            Socket server = new Socket(Address,Port);
             PrintWriter out=new PrintWriter(server.getOutputStream());
             Scanner in=new Scanner(server.getInputStream());
             String dics = String.join(",", dictionaries);
-            out.println("c,"+dics+"," + query);
+            System.out.println("sending challenge " + query);
+            out.println("C,"+dics+"," + query);
             out.flush();
-             res=in.next();
-            return Boolean.getBoolean(res);
+            if (in.hasNext()) {
+                String res = in.next();
+                System.out.println("challenge "+ query +" res: " + res);
+                if (res.equals("true"))
+                    answer = true;
+                in.close();
+                out.close();
+                server.close();
+                return answer;
+            }
         }catch (IOException e) {
             System.out.println("your code ran into an exception");
         }
@@ -53,13 +65,26 @@ public class MyServerFacade {
      * @param dictionaries the books that we want to search the word in.
      * @param query the the word that we want to search
      */
-    public Boolean Query(String[] dictionaries, String query) throws IOException{
-        PrintWriter out=new PrintWriter(server.getOutputStream());
-        Scanner in=new Scanner(server.getInputStream());
+    public Boolean Query(String[] dictionaries, String query) throws IOException {
+        boolean answer = false;
+        Socket server = new Socket(Address,Port);
+        PrintWriter out = new PrintWriter(server.getOutputStream());
+        Scanner in = new Scanner(server.getInputStream());
         String dics = String.join(",", dictionaries);
-        out.println("q,"+dics+"," + query);
+        System.out.println("sending query "+ query);
+        out.println("Q," + dics + "," + query);
         out.flush();
-        String res=in.next();
-        return Boolean.getBoolean(res);
+        if (in.hasNext()) {
+            String res = in.next();
+            System.out.println("Query "+ query +" res: " + res);
+
+            if (res.equals("true"))
+                answer = true;
+            in.close();
+            out.close();
+            server.close();
+            return answer;
+        }
+    return false;
     }
 }

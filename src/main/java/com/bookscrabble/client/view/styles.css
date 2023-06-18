@@ -13,3 +13,18 @@ VBox
     -fx-background-radius: 10;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 4);
 }
+
+.game-grid {
+    -fx-padding: 20px;
+}
+
+.game-grid > * {
+    -fx-padding: 10px;
+    -fx-max-width: 40px;
+}
+
+.main-label {
+    -fx-font-size: 25px;
+    -fx-padding: 10px;
+    -fx-margin: 10px;
+}

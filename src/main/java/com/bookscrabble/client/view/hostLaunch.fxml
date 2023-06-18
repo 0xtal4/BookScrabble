@@ -31,7 +31,7 @@
                         </FXCollections>
                     </items>
                 </ComboBox>
-                <Button text="Launch Game" onAction="#handleBackButton" />
+                <Button text="Launch Game" onAction="#gameUI" />
             </children>
         </VBox>
     </children>
