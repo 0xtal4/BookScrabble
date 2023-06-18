@@ -23,4 +23,10 @@ public class HostLaunch {
         // Load the previous scene
         BookScrabble.loadScene("../view/launchPage.fxml");
     }
+
+    public void gameUI(ActionEvent actionEvent) throws Exception {
+       // BookScrabble.loadScene("../view/gameUI.fxml");
+        gameUI g = new gameUI();
+        g.start();
+    }
 }

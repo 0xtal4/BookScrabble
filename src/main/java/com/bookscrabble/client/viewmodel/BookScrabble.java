@@ -14,8 +14,11 @@ public class BookScrabble extends Application {
 
     private static StackPane rootLayout;
 
+    public static Stage pStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
+        pStage = primaryStage;
         rootLayout = new StackPane();
         Scene scene = new Scene(rootLayout, 800, 600); // You can specify size here or let it be resized later
 
