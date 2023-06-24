@@ -1,5 +1,6 @@
 package com.bookscrabble.client.viewmodel;
 
+import com.bookscrabble.client.model.Host;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -28,6 +29,7 @@ public class gameUI {
             for (int j = 0; j < 15; j++)
             {
                 TextField textField = new TextField ();
+                    textField.appendText(String.valueOf(Host.getHost().gameBoard.getBonuses()[i][j]));
                 gridPane.add(textField, i, j, 1, 1);
             }
         }

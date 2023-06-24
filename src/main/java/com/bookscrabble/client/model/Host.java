@@ -42,7 +42,7 @@ public class Host {
      */
     public void startGame(String[] dictionaries) throws Exception
     {
-        server = new MyServer(3000, new GuestHanlder());
+        server = new MyServer(3000, new GuestHanlder()); // problematic - there needs to be one server for all the games.
         facade = new MyServerFacade(9999, "localhost");
         this.dictionaries = Arrays.copyOfRange(dictionaries, 0, dictionaries.length-1);
     }

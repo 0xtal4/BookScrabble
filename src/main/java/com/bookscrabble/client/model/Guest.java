@@ -12,7 +12,7 @@ public class Guest {
     private static Socket serverConnection;
     private static Writer writer;
     private static BufferedReader reader;
-
+    private Tile[] tiles;
     private int points;
 
     /**

@@ -464,4 +464,7 @@ public class Board {
         return score;
 
    }
+   public char[][] getBonuses(){
+        return bonuses;
+   }
 }
